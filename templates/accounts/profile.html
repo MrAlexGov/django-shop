@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'accounts:dashboard' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-tachometer-alt me-2"></i>Дашборд
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-user me-2"></i>Профиль
+                    </a>
+                    <a href="{% url 'accounts:order_history' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказы
+                    </a>
+                    <a href="{% url 'accounts:addresses_list' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-map-marker-alt me-2"></i>Адреса
+                    </a>
+                    <a href="{% url 'accounts:wishlist' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i>Избранное
+                    </a>
+                    <a href="{% url 'accounts:bonuses' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-coins me-2"></i>Бонусы
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Информация о профиле</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Личные данные</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Имя:</strong></td>
+                                    <td>{{ user.first_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Фамилия:</strong></td>
+                                    <td>{{ user.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Email:</strong></td>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Телефон:</strong></td>
+                                    <td>{{ user.phone|default:"Не указан" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Дата регистрации:</strong></td>
+                                    <td>{{ user.date_joined|date:"d.m.Y" }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="mb-3">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+                                        <i class="fas fa-user text-white" style="font-size: 4rem;"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i>Редактировать профиль
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Статистика аккаунта</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <h3 class="text-primary">{{ stats.total_orders }}</h3>
+                                <p class="mb-0">Всего заказов</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <h3 class="text-success">{{ stats.total_spent|floatformat:0 }} ₽</h3>
+                                <p class="mb-0">Общая сумма покупок</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <h3 class="text-info">{{ stats.bonus_points }}</h3>
+                                <p class="mb-0">Бонусные баллы</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <h3 class="text-warning">{{ stats.wishlist_count }}</h3>
+                                <p class="mb-0">Товаров в избранном</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Быстрые действия -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Быстрые действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% url 'accounts:order_history' %}" class="btn btn-outline-primary btn-lg w-100 mb-3">
+                                <i class="fas fa-shopping-cart me-2"></i>История заказов
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'accounts:addresses_list' %}" class="btn btn-outline-secondary btn-lg w-100 mb-3">
+                                <i class="fas fa-map-marker-alt me-2"></i>Управление адресами
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-warning btn-lg w-100 mb-3">
+                                <i class="fas fa-key me-2"></i>Сменить пароль
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'accounts:notification_settings' %}" class="btn btn-outline-info btn-lg w-100 mb-3">
+                                <i class="fas fa-bell me-2"></i>Настройки уведомлений
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

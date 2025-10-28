@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация - {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    
+    .auth-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-width: 500px;
+        width: 100%;
+    }
+    
+    .auth-header {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .auth-body {
+        padding: 30px;
+    }
+    
+    .form-floating {
+        margin-bottom: 20px;
+    }
+    
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+    
+    .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0.25em;
+    }
+    
+    .btn-register {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .auth-footer {
+        text-align: center;
+        padding: 20px 30px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .password-requirements {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    
+    .requirement-item {
+        margin-bottom: 5px;
+    }
+    
+    .requirement-item.valid {
+        color: #28a745;
+    }
+    
+    .requirement-item.invalid {
+        color: #dc3545;
+    }
+    
+    .terms-text {
+        font-size: 0.85em;
+        color: #6c757d;
+        line-height: 1.4;
+    }
+    
+    .alert {
+        border-radius: 10px;
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2 class="mb-0">
+                <i class="fas fa-user-plus me-2"></i>Регистрация
+            </h2>
+            <p class="mt-2 mb-0">Создайте аккаунт в PhoneShop</p>
+        </div>
+        
+        <div class="auth-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" id="registrationForm" novalidate>
+                {% csrf_token %}
+                
+                <!-- Personal Information -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.first_name }}
+                            <label for="{{ form.first_name.id_for_label }}">Имя *</label>
+                            {% if form.first_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.first_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.last_name }}
+                            <label for="{{ form.last_name.id_for_label }}">Фамилия *</label>
+                            {% if form.last_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.last_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Username and Email -->
+                <div class="form-floating">
+                    {{ form.username }}
+                    <label for="{{ form.username.id_for_label }}">Логин *</label>
+                    {% if form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.username.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-floating">
+                    {{ form.email }}
+                    <label for="{{ form.email.id_for_label }}">Email *</label>
+                    {% if form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.email.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Phone and Date of Birth -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.phone }}
+                            <label for="{{ form.phone.id_for_label }}">Телефон</label>
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.phone.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.date_of_birth }}
+                            <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения</label>
+                            {% if form.date_of_birth.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.date_of_birth.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Password Fields -->
+                <div class="form-floating">
+                    {{ form.password1 }}
+                    <label for="{{ form.password1.id_for_label }}">Пароль *</label>
+                    {% if form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.password1.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-floating">
+                    {{ form.password2 }}
+                    <label for="{{ form.password2.id_for_label }}">Подтверждение пароля *</label>
+                    {% if form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.password2.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Password Requirements -->
+                <div class="password-requirements" id="passwordRequirements" style="display: none;">
+                    <h6 class="mb-2">Требования к паролю:</h6>
+                    <div class="requirement-item" id="req-length">
+                        <i class="fas fa-times me-1"></i>Минимум 8 символов
+                    </div>
+                    <div class="requirement-item" id="req-uppercase">
+                        <i class="fas fa-times me-1"></i>Заглавная буква
+                    </div>
+                    <div class="requirement-item" id="req-lowercase">
+                        <i class="fas fa-times me-1"></i>Строчная буква
+                    </div>
+                    <div class="requirement-item" id="req-number">
+                        <i class="fas fa-times me-1"></i>Цифра
+                    </div>
+                </div>
+                
+                <!-- Checkboxes -->
+                <div class="form-check mb-3">
+                    {{ form.is_subscribed }}
+                    <label class="form-check-label" for="{{ form.is_subscribed.id_for_label }}">
+                        Подписаться на новости и акции
+                    </label>
+                </div>
+                
+                <div class="form-check mb-3">
+                    {{ form.terms_accepted }}
+                    <label class="form-check-label terms-text" for="{{ form.terms_accepted.id_for_label }}">
+                        Я принимаю <a href="{% url 'core:terms' %}" target="_blank">условия использования</a> *
+                    </label>
+                    {% if form.terms_accepted.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.terms_accepted.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-check mb-3">
+                    {{ form.privacy_accepted }}
+                    <label class="form-check-label terms-text" for="{{ form.privacy_accepted.id_for_label }}">
+                        Я согласен с <a href="{% url 'core:privacy' %}" target="_blank">политикой конфиденциальности</a> *
+                    </label>
+                    {% if form.privacy_accepted.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.privacy_accepted.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-register">
+                    <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                </button>
+            </form>
+        </div>
+        
+        <div class="auth-footer">
+            <p class="mb-0">
+                Уже есть аккаунт? 
+                <a href="{% url 'accounts:login' %}" class="text-decoration-none fw-bold">
+                    Войти
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordField = document.getElementById('{{ form.password1.id_for_label }}');
+        const passwordRequirements = document.getElementById('passwordRequirements');
+        const requirements = {
+            length: document.getElementById('req-length'),
+            uppercase: document.getElementById('req-uppercase'),
+            lowercase: document.getElementById('req-lowercase'),
+            number: document.getElementById('req-number')
+        };
+        
+        function checkPasswordRequirements(password) {
+            const checks = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+            
+            // Update requirement indicators
+            Object.keys(checks).forEach(key => {
+                const element = requirements[key];
+                const icon = element.querySelector('i');
+                
+                if (checks[key]) {
+                    element.classList.remove('invalid');
+                    element.classList.add('valid');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-check');
+                } else {
+                    element.classList.remove('valid');
+                    element.classList.add('invalid');
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-times');
+                }
+            });
+            
+            // Show/hide requirements panel
+            if (password.length > 0) {
+                passwordRequirements.style.display = 'block';
+            } else {
+                passwordRequirements.style.display = 'none';
+            }
+            
+            return Object.values(checks).every(Boolean);
+        }
+        
+        passwordField.addEventListener('input', function() {
+            checkPasswordRequirements(this.value);
+        });
+        
+        // Form validation
+        const form = document.getElementById('registrationForm');
+        form.addEventListener('submit', function(e) {
+            const password = passwordField.value;
+            const confirmPassword = document.getElementById('{{ form.password2.id_for_label }}').value;
+            
+            if (!checkPasswordRequirements(password)) {
+                e.preventDefault();
+                alert('Пароль не соответствует требованиям');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Пароли не совпадают');
+                return;
+            }
+            
+            const termsAccepted = document.getElementById('{{ form.terms_accepted.id_for_label }}').checked;
+            const privacyAccepted = document.getElementById('{{ form.privacy_accepted.id_for_label }}').checked;
+            
+            if (!termsAccepted || !privacyAccepted) {
+                e.preventDefault();
+                alert('Необходимо принять условия использования и политику конфиденциальности');
+                return;
+            }
+        });
+        
+        // Add floating labels effect
+        const floatingInputs = document.querySelectorAll('.form-floating input, .form-floating select, .form-floating textarea');
+        floatingInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+            
+            // Check if input has value on page load
+            if (input.value) {
+                input.parentElement.classList.add('focused');
+            }
+        });
+    });
+</script>
+{% endblock %}

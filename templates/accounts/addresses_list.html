@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Адреса доставки{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'accounts:dashboard' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-tachometer-alt me-2"></i>Дашборд
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i>Профиль
+                    </a>
+                    <a href="{% url 'accounts:order_history' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказы
+                    </a>
+                    <a href="{% url 'accounts:addresses_list' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-map-marker-alt me-2"></i>Адреса
+                    </a>
+                    <a href="{% url 'accounts:wishlist' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i>Избранное
+                    </a>
+                    <a href="{% url 'accounts:bonuses' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-coins me-2"></i>Бонусы
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Адреса доставки</h2>
+                <a href="{% url 'accounts:address_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Добавить адрес
+                </a>
+            </div>
+
+            {% if addresses %}
+                <div class="row">
+                    {% for address in addresses %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 {% if address.is_default %}border-primary{% endif %}">
+                            {% if address.is_default %}
+                            <div class="card-header bg-primary text-white">
+                                <i class="fas fa-star me-2"></i>Адрес по умолчанию
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ address.get_full_address }}</h5>
+                                <div class="address-details">
+                                    {% if address.apartment %}
+                                    <p class="mb-1"><strong>Квартира:</strong> {{ address.apartment }}</p>
+                                    {% endif %}
+                                    {% if address.floor %}
+                                    <p class="mb-1"><strong>Этаж:</strong> {{ address.floor }}</p>
+                                    {% endif %}
+                                    {% if address.entrance %}
+                                    <p class="mb-1"><strong>Подъезд:</strong> {{ address.entrance }}</p>
+                                    {% endif %}
+                                    {% if address.intercom %}
+                                    <p class="mb-1"><strong>Домофон:</strong> {{ address.intercom }}</p>
+                                    {% endif %}
+                                    {% if address.comment %}
+                                    <p class="mb-2"><strong>Комментарий:</strong> {{ address.comment }}</p>
+                                    {% endif %}
+                                    <p class="mb-1 text-muted small">
+                                        Добавлен: {{ address.created_at|date:"d.m.Y" }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group w-100" role="group">
+                                    <a href="{% url 'accounts:address_update' address.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit me-1"></i>Изменить
+                                    </a>
+                                    {% if not address.is_default %}
+                                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="setDefaultAddress({{ address.id }})">
+                                        <i class="fas fa-star me-1"></i>По умолчанию
+                                    </button>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteAddress({{ address.id }}, '{{ address.get_full_address|truncatechars:50 }}')">
+                                        <i class="fas fa-trash me-1"></i>Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Нет адресов -->
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">У вас нет сохраненных адресов</h4>
+                        <p class="text-muted mb-4">Добавьте адрес доставки, чтобы ускорить оформление заказов</p>
+                        <a href="{% url 'accounts:address_create' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i>Добавить первый адрес
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Информация -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5><i class="fas fa-info-circle me-2"></i>Полезная информация</h5>
+                    <ul class="mb-0">
+                        <li>Вы можете добавить до 5 адресов доставки</li>
+                        <li>Один адрес может быть установлен как адрес по умолчанию</li>
+                        <li>Адрес по умолчанию будет автоматически выбран при оформлении заказа</li>
+                        <li>Все адреса доставки защищены и используются только для выполнения заказов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно удаления адреса -->
+<div class="modal fade" id="deleteAddressModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление адреса</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить адрес?</p>
+                <p class="text-muted" id="deleteAddressText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form id="deleteAddressForm" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно установки адреса по умолчанию -->
+<div class="modal fade" id="setDefaultModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Установка адреса по умолчанию</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Установить этот адрес как адрес по умолчанию для доставки?</p>
+                <p class="text-muted" id="setDefaultAddressText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form id="setDefaultForm" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Установить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteAddress(addressId, addressText) {
+    document.getElementById('deleteAddressText').textContent = addressText;
+    const form = document.getElementById('deleteAddressForm');
+    form.action = `/accounts/addresses/${addressId}/delete/`;
+
+    const modal = new bootstrap.Modal(document.getElementById('deleteAddressModal'));
+    modal.show();
+}
+
+function setDefaultAddress(addressId) {
+    const addressCard = document.querySelector(`[data-address-id="${addressId}"]`);
+    const addressText = addressCard ? addressCard.querySelector('.card-title').textContent : '';
+
+    document.getElementById('setDefaultAddressText').textContent = addressText;
+    const form = document.getElementById('setDefaultForm');
+    form.action = `/accounts/addresses/${addressId}/set-default/`;
+
+    const modal = new bootstrap.Modal(document.getElementById('setDefaultModal'));
+    modal.show();
+}
+</script>
+
+<style>
+.card.border-primary {
+    border-width: 2px;
+}
+.address-details p {
+    font-size: 0.9rem;
+}
+.btn-group .btn {
+    flex: 1;
+}
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+    }
+    .btn-group .btn {
+        margin-bottom: 5px;
+    }
+}
+</style>
+{% endblock %}

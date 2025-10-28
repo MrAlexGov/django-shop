@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Активация отправлена - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <h2 class="card-title mb-3">Готово!</h2>
+                    
+                    <p class="card-text mb-4">
+                        Мы отправили ссылку для активации вашего аккаунта 
+                        на <strong>{{ email }}</strong>.
+                    </p>
+                    
+                    <div class="alert alert-info" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>Следующие шаги:
+                        </h6>
+                        <ol class="mb-0 text-start">
+                            <li>Проверьте вашу электронную почту</li>
+                            <li>Перейдите по ссылке в письме</li>
+                            <li>Ссылка действительна в течение 48 часов</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted mb-3">Ссылка не пришла?</p>
+                        <a href="{% url 'accounts:resend_verification' %}" class="btn btn-outline-primary me-3">
+                            <i class="fas fa-redo me-2"></i>Отправить повторно
+                        </a>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'core:home' %}" class="btn btn-success">
+                            <i class="fas fa-home me-2"></i>На главную
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

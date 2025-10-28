@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Блог - PhoneShop{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-sidebar {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .article-card {
+        transition: transform 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+    
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .article-image {
+        height: 200px;
+        object-fit: cover;
+        background: #f8f9fa;
+    }
+    
+    .tag-badge {
+        background: #e9ecef;
+        color: #495057;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-right: 5px;
+        text-decoration: none;
+    }
+    
+    .tag-badge:hover {
+        background: #007bff;
+        color: white;
+    }
+    
+    .featured-article {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Заголовок -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Блог</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+                    <li class="breadcrumb-item active">Блог</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar с фильтрами -->
+        <div class="col-lg-3">
+            <div class="blog-sidebar">
+                <h5 class="mb-3">Фильтры</h5>
+                
+                <form method="GET">
+                    <!-- Поиск -->
+                    <div class="mb-3">
+                        <label for="q" class="form-label">Поиск</label>
+                        <input type="text" class="form-control" id="q" name="q" 
+                               value="{{ request.GET.q }}" placeholder="Введите текст...">
+                    </div>
+                    
+                    <!-- Категории -->
+                    {% if categories %}
+                    <div class="mb-3">
+                        <label class="form-label">Категория</label>
+                        <select class="form-select" name="category">
+                            <option value="">Все категории</option>
+                            {% for category in categories %}
+                                <option value="{{ category.slug }}" 
+                                        {% if request.GET.category == category.slug %}selected{% endif %}>
+                                    {{ category.name }} ({{ category.article_count }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Теги -->
+                    {% if popular_tags %}
+                    <div class="mb-3">
+                        <label class="form-label">Популярные теги</label>
+                        {% for tag in popular_tags %}
+                            <a href="?tag={{ tag.slug }}" class="tag-badge">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Сортировка -->
+                    <div class="mb-3">
+                        <label class="form-label">Сортировка</label>
+                        <select class="form-select" name="sort">
+                            <option value="-published_at" {% if request.GET.sort == '-published_at' %}selected{% endif %}>
+                                Сначала новые
+                            </option>
+                            <option value="published_at" {% if request.GET.sort == 'published_at' %}selected{% endif %}>
+                                Сначала старые
+                            </option>
+                            <option value="-views_count" {% if request.GET.sort == '-views_count' %}selected{% endif %}>
+                                По популярности
+                            </option>
+                            <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>
+                                По названию
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter me-2"></i>Применить
+                        </button>
+                        <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">
+                            Сбросить
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Список статей -->
+        <div class="col-lg-9">
+            <!-- Рекомендуемые статьи -->
+            {% if featured_articles %}
+                {% for article in featured_articles %}
+                    {% if forloop.first %}
+                        <div class="featured-article">
+                            <h2 class="mb-3">
+                                <a href="{% url 'blog:post_detail' article.slug %}" style="color: white; text-decoration: none;">
+                                    {{ article.title }}
+                                </a>
+                            </h2>
+                            <p class="mb-3">{{ article.excerpt|truncatewords:30 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-light text-dark">{{ article.category.name }}</span>
+                                <small>{{ article.published_at|date:"d.m.Y" }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <!-- Счетчик результатов -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="text-muted">
+                        {% if page_obj.paginator.count > 0 %}
+                            Найдено {{ page_obj.paginator.count }} статей
+                            {% if request.GET.q %}по запросу "{{ request.GET.q }}"{% endif %}
+                        {% else %}
+                            Статьи не найдены
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Сетка статей -->
+            <div class="row">
+                {% for article in articles %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card article-card h-100">
+                            {% if article.featured_image %}
+                                <img src="{{ article.featured_image.url }}" 
+                                     class="card-img-top article-image" 
+                                     alt="{{ article.title }}">
+                            {% endif %}
+                            
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-primary mb-2">{{ article.category.name }}</span>
+                                <h6 class="card-title">
+                                    <a href="{% url 'blog:post_detail' article.slug %}" 
+                                       style="text-decoration: none; color: inherit;">
+                                        {{ article.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text text-muted small">
+                                    {{ article.excerpt|truncatewords:15 }}
+                                </p>
+                                
+                                <!-- Теги -->
+                                {% if article.tags %}
+                                    <div class="mb-2">
+                                        {% for tag in article.tags.all|slice:":3" %}
+                                            <span class="tag-badge">{{ tag.tag.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Мета-информация -->
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center small text-muted">
+                                        <span>
+                                            <i class="fas fa-eye me-1"></i>{{ article.views_count }}
+                                            <i class="fas fa-heart ms-2 me-1"></i>{{ article.likes_count }}
+                                        </span>
+                                        <span>{{ article.published_at|date:"d.m.Y" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                            <h4>Статьи не найдены</h4>
+                            <p class="text-muted">Попробуйте изменить параметры поиска или фильтры</p>
+                            <a href="{% url 'blog:post_list' %}" class="btn btn-primary">
+                                Показать все статьи
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Пагинация -->
+            {% if page_obj.paginator.num_pages > 1 %}
+                <nav aria-label="Навигация по страницам">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET %}&{{ request.GET.urlencode|slice:':-' }}{% endif %}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_num in page_obj.paginator.page_range %}
+                            {% if page_num == page_obj.number %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                            {% elif page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_num }}{% if request.GET %}&{{ request.GET.urlencode|slice:':-' }}{% endif %}">{{ page_num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET %}&{{ request.GET.urlencode|slice:':-' }}{% endif %}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Автоматическая отправка формы при изменении фильтров
+    $('select[name="sort"]').change(function() {
+        $(this).closest('form').submit();
+    });
+</script>
+{% endblock %}

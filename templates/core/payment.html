@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block title %}Оплата - PhoneShop{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="fw-bold mb-3">Способы оплаты</h1>
+                <p class="lead text-muted">Безопасные и удобные способы оплаты</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Способы оплаты -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Доступные способы оплаты</h2>
+        </div>
+        
+        <!-- Банковские карты -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Банковские карты</h5>
+                    <h6 class="text-muted">Visa, MasterCard, МИР</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Мгновенное зачисление</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Безопасность платежа</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Без комиссии</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Чек на email</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Электронные деньги -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fab fa-paypal fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Электронные деньги</h5>
+                    <h6 class="text-muted">Яндекс.Деньги, QIWI, WebMoney</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Быстрая оплата</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Без комиссии</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Мгновенное подтверждение</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Хранение в кошельке</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Наличными -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-money-bill-wave fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Наличными</h5>
+                    <h6 class="text-muted">При получении заказа</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Без предоплаты</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Курьеру или в ПВЗ</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Проверка товара</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Получение чека</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Банковский перевод -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-university fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Банковский перевод</h5>
+                    <h6 class="text-muted">По реквизитам компании</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Для юридических лиц</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Счет на оплату</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Отсрочка платежа</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Полный пакет документов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- СБП -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-mobile-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Система быстрых платежей</h5>
+                    <h6 class="text-muted">По QR-коду через банковское приложение</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Мгновенная оплата</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Без комиссии</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Безопасность ЦБ РФ</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Удобно со смартфона</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Криптовалюта -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fab fa-bitcoin fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Криптовалюта</h5>
+                    <h6 class="text-muted">Bitcoin, Ethereum</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Анонимность</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Быстрый перевод</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Международные платежи</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Без банковских ограничений</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Безопасность платежей -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Безопасность платежей</h2>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-shield-alt text-success me-2"></i>
+                                Защита данных
+                            </h5>
+                            <p class="card-text">
+                                Все платежные данные передаются в зашифрованном виде по протоколу SSL 3.0. 
+                                Мы не храним данные ваших банковских карт на наших серверах.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-lock text-success me-2"></i>
+                                Сертификация
+                            </h5>
+                            <p class="card-text">
+                                Наш сайт сертифицирован по стандарту PCI DSS Level 1, 
+                                что гарантирует высочайший уровень защиты платежной информации.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-user-shield text-success me-2"></i>
+                                Конфиденциальность
+                            </h5>
+                            <p class="card-text">
+                                Мы не передаем ваши персональные данные третьим лицам, 
+                                кроме случаев, предусмотренных законодательством РФ.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-headset text-success me-2"></i>
+                                Поддержка 24/7
+                            </h5>
+                            <p class="card-text">
+                                В случае спорных ситуаций или вопросов по платежам 
+                                наша служба поддержки готова помочь в любое время.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Условия оплаты -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Условия оплаты</h2>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Для физических лиц</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0">
+                            <strong>Предоплата:</strong> Картой, электронными деньгами, СБП
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>При получении:</strong> Наличными курьеру или в пункте выдачи
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>Комиссия:</strong> Отсутствует при любом способе оплаты
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>Чек:</strong> Автоматически отправляется на email
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h4>Для юридических лиц</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0">
+                            <strong>Оплата:</strong> По безналичному расчету
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>Документы:</strong> Полный пакет документов для бухгалтерии
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>Отсрочка:</strong> Возможна для постоянных клиентов
+                        </li>
+                        <li class="list-group-item border-0">
+                            <strong>Счет:</strong> Выставляется в течение 1 рабочего дня
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Возврат средств -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Возврат средств</h2>
+            
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle me-2"></i>Условия возврата денежных средств</h5>
+                <ul class="mb-0">
+                    <li>При отмене заказа до отправки - возврат в течение 1-3 рабочих дней</li>
+                    <li>При возврате товара - возврат в течение 5-10 рабочих дней</li>
+                    <li>При оплате картой - возврат на ту же карту</li>
+                    <li>При оплате наличными - перевод на банковский счет</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

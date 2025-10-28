@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - {{ product.brand.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-md-6">
+            <div class="product-images">
+                {% for image in images %}
+                    {% if image.is_main %}
+                        <img src="{{ image.image.url }}" class="img-fluid mb-3" alt="{{ image.alt_text }}">
+                    {% endif %}
+                {% endfor %}
+
+                {% if images|length > 1 %}
+                <div class="row">
+                    {% for image in images %}
+                        <div class="col-3">
+                            <img src="{{ image.image.url }}" class="img-fluid mb-2" alt="{{ image.alt_text }}" style="cursor: pointer;">
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <h2 class="text-muted">{{ product.brand.name }}</h2>
+
+            <!-- Rating -->
+            {% if product.rating %}
+            <div class="mb-3">
+                <span class="text-warning">
+                    {% for i in "12345" %}
+                        {% if i <= product.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span class="ms-2">{{ product.rating }} ({{ product.reviews_count }} отзывов)</span>
+            </div>
+            {% endif %}
+
+            <!-- Price -->
+            <div class="mb-3">
+                {% if product.old_price %}
+                    <span class="text-decoration-line-through text-muted">{{ product.old_price }} ₽</span>
+                    <span class="fs-3 fw-bold text-danger ms-2">{{ product.price }} ₽</span>
+                    <span class="badge bg-success ms-2">{{ product.get_discount_percent }}% скидка</span>
+                {% else %}
+                    <span class="fs-3 fw-bold">{{ product.price }} ₽</span>
+                {% endif %}
+            </div>
+
+            <!-- Availability -->
+            <div class="mb-3">
+                {% if product.in_stock %}
+                    <span class="badge bg-success">В наличии</span>
+                    {% if product.stock_quantity %}
+                        <small class="text-muted ms-2">На складе: {{ product.stock_quantity }} шт.</small>
+                    {% endif %}
+                {% else %}
+                    <span class="badge bg-danger">Нет в наличии</span>
+                {% endif %}
+            </div>
+
+            <!-- Short Description -->
+            {% if product.short_description %}
+            <p class="mb-3">{{ product.short_description }}</p>
+            {% endif %}
+
+            <!-- Actions -->
+            <div class="mb-4">
+                {% if product.can_buy %}
+                    <button class="btn btn-primary btn-lg me-2" id="add-to-cart" data-product-id="{{ product.id }}">
+                        <i class="fas fa-cart-plus"></i> Добавить в корзину
+                    </button>
+                {% endif %}
+
+                <button class="btn btn-outline-secondary me-2" id="add-to-wishlist">
+                    <i class="far fa-heart"></i> В избранное
+                </button>
+
+                <button class="btn btn-outline-secondary" id="add-to-compare">
+                    <i class="fas fa-balance-scale"></i> Сравнить
+                </button>
+            </div>
+
+            <!-- Product Details -->
+            <div class="mb-4">
+                <h4>Характеристики</h4>
+                <ul class="list-unstyled">
+                    {% if product.specifications %}
+                        {% for spec in specifications %}
+                            <li><strong>{{ spec.specification.name }}:</strong> {{ spec.get_value }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Delivery Info -->
+            {% if product.free_delivery %}
+            <div class="alert alert-success">
+                <i class="fas fa-truck"></i> Бесплатная доставка
+            </div>
+            {% endif %}
+
+            {% if product.delivery_time %}
+            <p class="text-muted">
+                <i class="fas fa-clock"></i> Время доставки: {{ product.delivery_time }}
+            </p>
+            {% endif %}
+
+            <!-- Warranty -->
+            {% if product.warranty_months %}
+            <p class="text-muted">
+                <i class="fas fa-shield-alt"></i>
+                Гарантия: {{ product.warranty_months }} месяцев
+                {% if product.is_official_warranty %} (официальная){% endif %}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Detailed Description -->
+    {% if product.description %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Описание</h3>
+            <div>{{ product.description|safe }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Reviews -->
+    {% if reviews %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Отзывы ({{ reviews|length }})</h3>
+
+            <!-- Rating Summary -->
+            <div class="mb-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h1>{{ rating_stats.avg_rating|floatformat:1 }}</h1>
+                            <div class="text-warning mb-2">
+                                {% for i in "12345" %}
+                                    {% if i <= rating_stats.avg_rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <p class="text-muted">{{ reviews|length }} отзывов</p>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        {% for i in "54321" %}
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="me-2">{{ i }} <i class="fas fa-star text-warning"></i></span>
+                            <div class="progress flex-fill" style="height: 8px;">
+                                <div class="progress-bar bg-warning" style="width: 50%"></div>
+                            </div>
+                            <span class="ms-2">0</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title">{{ review.user.get_full_name }}</h6>
+                                <div class="text-warning mb-2">
+                                    {% for i in "12345" %}
+                                        {% if i <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+                        </div>
+
+                        {% if review.title %}
+                        <h6>{{ review.title }}</h6>
+                        {% endif %}
+
+                        <p class="card-text">{{ review.text }}</p>
+
+                        {% if review.pros %}
+                        <p class="text-success"><strong>Достоинства:</strong> {{ review.pros }}</p>
+                        {% endif %}
+
+                        {% if review.cons %}
+                        <p class="text-danger"><strong>Недостатки:</strong> {{ review.cons }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Похожие товары</h3>
+            <div class="row">
+                {% for related_product in related_products %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        {% if related_product.get_main_image %}
+                        <img src="{{ related_product.get_main_image.url }}" class="card-img-top" alt="{{ related_product.name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <a href="{{ related_product.get_absolute_url }}" class="text-decoration-none">
+                                    {{ related_product.brand.name }} {{ related_product.name }}
+                                </a>
+                            </h6>
+                            <p class="card-text">
+                                {% if related_product.old_price %}
+                                    <span class="text-decoration-line-through text-muted">{{ related_product.old_price }} ₽</span>
+                                    <span class="fw-bold text-danger">{{ related_product.price }} ₽</span>
+                                {% else %}
+                                    <span class="fw-bold">{{ related_product.price }} ₽</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- JavaScript for interactive elements -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add to cart functionality
+    const addToCartBtn = document.getElementById('add-to-cart');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            const quantity = 1;
+
+            fetch('/cart/add-to-cart/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при добавлении товара');
+            });
+        });
+    }
+
+    // Add to wishlist functionality
+    const addToWishlistBtn = document.getElementById('add-to-wishlist');
+    if (addToWishlistBtn) {
+        addToWishlistBtn.addEventListener('click', function() {
+            // Implementation would go here
+            alert('Добавлено в избранное!');
+        });
+    }
+
+    // Add to compare functionality
+    const addToCompareBtn = document.getElementById('add-to-compare');
+    if (addToCompareBtn) {
+        addToCompareBtn.addEventListener('click', function() {
+            // Implementation would go here
+            alert('Добавлено в сравнение!');
+        });
+    }
+});
+</script>
+{% endblock %}

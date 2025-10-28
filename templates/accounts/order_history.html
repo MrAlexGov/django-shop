@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}История заказов{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'accounts:dashboard' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-tachometer-alt me-2"></i>Дашборд
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i>Профиль
+                    </a>
+                    <a href="{% url 'accounts:order_history' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказы
+                    </a>
+                    <a href="{% url 'accounts:addresses_list' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-map-marker-alt me-2"></i>Адреса
+                    </a>
+                    <a href="{% url 'accounts:wishlist' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i>Избранное
+                    </a>
+                    <a href="{% url 'accounts:bonuses' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-coins me-2"></i>Бонусы
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>История заказов</h2>
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Новый заказ
+                </a>
+            </div>
+
+            <!-- Фильтры -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="status" class="form-label">Статус заказа</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="">Все статусы</option>
+                                {% for status_value, status_name in status_choices %}
+                                <option value="{{ status_value }}" {% if status_filter == status_value %}selected{% endif %}>
+                                    {{ status_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="period" class="form-label">Период</label>
+                            <select name="period" id="period" class="form-select">
+                                <option value="">Все время</option>
+                                <option value="week" {% if period == 'week' %}selected{% endif %}>Последняя неделя</option>
+                                <option value="month" {% if period == 'month' %}selected{% endif %}>Последний месяц</option>
+                                <option value="year" {% if period == 'year' %}selected{% endif %}>Последний год</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="q" class="form-label">Поиск по номеру</label>
+                            <input type="text" name="q" id="q" class="form-control" value="{{ search_query }}" placeholder="Номер заказа">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-search me-2"></i>Найти
+                            </button>
+                            <a href="{% url 'accounts:order_history' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Сбросить
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Список заказов -->
+            {% if orders %}
+                <div class="card">
+                    <div class="card-body p-0">
+                        {% for order in orders %}
+                        <div class="order-item border-bottom p-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <div class="order-number">
+                                        <strong>{{ order.order_number }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ order.created_at|date:"d.m.Y H:i" }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="badge
+                                        {% if order.status == 'completed' %}bg-success
+                                        {% elif order.status == 'pending' %}bg-warning text-dark
+                                        {% elif order.status == 'processing' %}bg-info
+                                        {% elif order.status == 'shipped' %}bg-primary
+                                        {% elif order.status == 'cancelled' %}bg-danger
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="order-items">
+                                        {% for item in order.items.all|slice:":3" %}
+                                        <div class="small text-muted">
+                                            {{ item.product_name }} x{{ item.quantity }}
+                                        </div>
+                                        {% endfor %}
+                                        {% if order.items.count > 3 %}
+                                        <div class="small text-muted">... и ещё {{ order.items.count|add:"-3" }} товаров</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="order-total">
+                                        <strong class="text-primary">{{ order.total_amount }} ₽</strong>
+                                        {% if order.discount_amount %}
+                                        <br><small class="text-success">Скидка: {{ order.discount_amount }} ₽</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-eye me-1"></i>Подробнее
+                                    </a>
+                                    {% if order.can_cancel %}
+                                    <button class="btn btn-sm btn-outline-danger" onclick="cancelOrder('{{ order.order_number }}')">
+                                        <i class="fas fa-times me-1"></i>Отменить
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Пагинация -->
+                {% if page_obj.has_other_pages %}
+                <nav aria-label="Навигация по страницам" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if status_filter %}status={{ status_filter }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}{% if period %}period={{ period }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if status_filter %}status={{ status_filter }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}{% if period %}period={{ period }}&{% endif %}page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if status_filter %}status={{ status_filter }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}{% if period %}period={{ period }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% else %}
+                <!-- Нет заказов -->
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">У вас пока нет заказов</h4>
+                        <p class="text-muted mb-4">Здесь будут отображаться все ваши заказы после совершения покупок</p>
+                        <a href="{% url 'catalog:product_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-bag me-2"></i>Начать покупки
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно отмены заказа -->
+<div class="modal fade" id="cancelOrderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Отмена заказа</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите отменить заказ <strong id="cancelOrderNumber"></strong>?</p>
+                <p class="text-muted small">Отменить можно только заказы в статусе "Ожидает обработки" или "В обработке".</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirmCancelBtn">Подтвердить отмену</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function cancelOrder(orderNumber) {
+    document.getElementById('cancelOrderNumber').textContent = orderNumber;
+    const modal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+    modal.show();
+
+    document.getElementById('confirmCancelBtn').onclick = function() {
+        // Здесь можно добавить AJAX запрос для отмены заказа
+        alert('Заказ ' + orderNumber + ' отменен');
+        modal.hide();
+        location.reload();
+    };
+}
+</script>
+
+<style>
+.order-item:hover {
+    background-color: #f8f9fa;
+}
+.order-number {
+    font-size: 1.1rem;
+}
+.order-total {
+    font-size: 1.1rem;
+}
+.badge {
+    font-size: 0.8rem;
+}
+@media (max-width: 768px) {
+    .order-item .row > div {
+        margin-bottom: 10px;
+    }
+}
+</style>
+{% endblock %}

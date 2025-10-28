@@ -1,0 +1,386 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Корзина - PhoneShop{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cart-item {
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+    }
+    
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+    
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        background: #f8f9fa;
+    }
+    
+    .quantity-control {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    
+    .quantity-btn {
+        background: none;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    
+    .quantity-input {
+        border: none;
+        text-align: center;
+        width: 50px;
+        background: none;
+    }
+    
+    .summary-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        position: sticky;
+        top: 20px;
+    }
+    
+    .empty-cart {
+        text-align: center;
+        padding: 60px 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Заголовок -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Корзина</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Главная</a></li>
+                    <li class="breadcrumb-item active">Корзина</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Содержимое корзины -->
+        <div class="col-lg-8">
+            {% if cart_items %}
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Товары в корзине ({{ cart.items_count }} шт.)</h5>
+                        <button class="btn btn-outline-danger btn-sm" onclick="clearCart()">
+                            <i class="fas fa-trash me-1"></i>Очистить корзину
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        {% for item in cart_items %}
+                            <div class="cart-item" data-item-id="{{ item.id }}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{ item.product.main_image.url|default:'/static/images/no-image.png' }}" 
+                                             class="product-image rounded" alt="{{ item.product.name }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6>{{ item.product.brand.name }}</h6>
+                                        <h6 class="fw-bold">{{ item.product.name }}</h6>
+                                        <p class="text-muted small mb-0">{{ item.product.category.name }}</p>
+                                        {% if item.product.sku %}
+                                            <p class="text-muted small">Артикул: {{ item.product.sku }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="quantity-control">
+                                            <button class="quantity-btn decrease-btn" data-item-id="{{ item.id }}" data-current-qty="{{ item.quantity|default:1 }}">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input type="number" class="quantity-input" 
+                                                   value="{{ item.quantity|default:1 }}" 
+                                                   data-item-id="{{ item.id }}"
+                                                   min="1" max="{{ item.product.stock_quantity }}">
+                                            <button class="quantity-btn increase-btn" data-item-id="{{ item.id }}" data-current-qty="{{ item.quantity|default:1 }}">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <small class="text-muted">доступно: {{ item.product.stock_quantity }}</small>
+                                    </div>
+                                    <div class="col-md-2">
+                                        {% if item.product.old_price and item.product.old_price > item.product.price %}
+                                            <small class="text-decoration-line-through d-block">{{ item.product.old_price }} ₽</small>
+                                        {% endif %}
+                                        <strong>{{ item.unit_price }} ₽</strong>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <strong>{{ item.total_price }} ₽</strong>
+                                        {% if item.discount_amount %}
+                                            <br><small class="text-success">-{{ item.discount_amount }} ₽</small>
+                                        {% endif %}
+                                        <br>
+                                        <button class="btn btn-outline-danger btn-sm mt-2 remove-item-btn" 
+                                                data-item-id="{{ item.id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                        <h3>Ваша корзина пуста</h3>
+                        <p class="text-muted mb-4">Добавьте товары в корзину, чтобы оформить заказ</p>
+                        <a href="{% url 'catalog:product_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-bag me-2"></i>Перейти в каталог
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Итоговая сумма -->
+        <div class="col-lg-4">
+            {% if cart_items %}
+                <div class="summary-card">
+                    <h5 class="mb-3">Итого</h5>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Товары ({{ cart.total_quantity }} шт.)</span>
+                        <span>{{ cart.total_price }} ₽</span>
+                    </div>
+                    
+                    {% if cart.total_discount %}
+                        <div class="d-flex justify-content-between mb-2 text-success">
+                            <span>Скидка на товары</span>
+                            <span>-{{ cart.total_discount }} ₽</span>
+                        </div>
+                    {% endif %}
+                    
+                    {% if cart.discount_amount %}
+                        <div class="d-flex justify-content-between mb-2 text-success">
+                            <span>Промокод</span>
+                            <span>-{{ cart.discount_amount }} ₽</span>
+                        </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Доставка</strong>
+                        <span>
+                            {% if cart.delivery_cost == 0 %}
+                                <span class="text-success">Бесплатно</span>
+                            {% else %}
+                                {{ cart.delivery_cost }} ₽
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    {% if cart.delivery_cost > 0 and cart.final_price >= cart.free_delivery_threshold %}
+                        <div class="text-success small mb-3">
+                            <i class="fas fa-check-circle me-1"></i>
+                            Поздравляем! У вас бесплатная доставка
+                        </div>
+                    {% elif cart.delivery_cost > 0 %}
+                        <!-- Информация о доставке временно отключена из-за проблем с БД -->
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Итого:</strong>
+                        <strong class="text-primary h5">{{ cart.final_price }} ₽</strong>
+                    </div>
+                    
+                    <!-- Промокод -->
+                    {% if not cart.applied_discount %}
+                        <div class="mb-3">
+                            <label class="form-label">Промокод</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="promo-code" placeholder="Введите промокод">
+                                <button class="btn btn-outline-primary" onclick="applyPromoCode()">Применить</button>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Промокод применен</span>
+                                <button class="btn btn-sm btn-outline-danger" onclick="removePromoCode()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">{{ cart.applied_discount.code }}</small>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Кнопка оформления заказа -->
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'orders:checkout' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-credit-card me-2"></i>Оформить заказ
+                        </a>
+                        <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-primary">
+                            Продолжить покупки
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Обновление количества товара
+    function updateQuantity(itemId, newQuantity) {
+        if (newQuantity < 1) {
+            removeItem(itemId);
+            return;
+        }
+        
+        $.ajax({
+            url: '{% url "cart:update_item_quantity" %}',
+            method: 'POST',
+            data: {
+                item_id: itemId,
+                quantity: newQuantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + response.message);
+                }
+            }
+        });
+    }
+    
+    // Удаление товара из корзины
+    function removeItem(itemId) {
+        if (confirm('Удалить товар из корзины?')) {
+            $.ajax({
+                url: '{% url "cart:remove_item" %}',
+                method: 'POST',
+                data: {
+                    item_id: itemId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Ошибка: ' + response.message);
+                    }
+                }
+            });
+        }
+    }
+    
+    // Очистка корзины
+    function clearCart() {
+        if (confirm('Очистить всю корзину?')) {
+            $.ajax({
+                url: '{% url "cart:clear_cart" %}',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Ошибка: ' + response.message);
+                    }
+                }
+            });
+        }
+    }
+    
+    // Применение промокода
+    function applyPromoCode() {
+        const code = $('#promo-code').val().trim();
+        if (!code) {
+            alert('Введите промокод');
+            return;
+        }
+        
+        $.ajax({
+            url: '{% url "cart:apply_promo_code" %}',
+            method: 'POST',
+            data: {
+                code: code,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + response.message);
+                }
+            }
+        });
+    }
+    
+    // Удаление промокода
+    function removePromoCode() {
+        $.ajax({
+            url: '{% url "cart:remove_promo_code" %}',
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + response.message);
+                }
+            }
+        });
+    }
+    
+    // Обновляем счетчик корзины при загрузке страницы
+    $(document).ready(function() {
+        updateCartCount();
+        
+        // Обработчики событий для кнопок количества
+        $('.decrease-btn').click(function() {
+            const itemId = $(this).data('item-id');
+            const currentQty = parseInt($(this).data('current-qty'));
+            updateQuantity(itemId, currentQty - 1);
+        });
+        
+        $('.increase-btn').click(function() {
+            const itemId = $(this).data('item-id');
+            const currentQty = parseInt($(this).data('current-qty'));
+            updateQuantity(itemId, currentQty + 1);
+        });
+        
+        // Обработчик изменения количества в поле ввода
+        $('.quantity-input').change(function() {
+            const itemId = $(this).data('item-id');
+            const newQty = parseInt($(this).val());
+            updateQuantity(itemId, newQty);
+        });
+        
+        // Обработчик удаления товара
+        $('.remove-item-btn').click(function() {
+            const itemId = $(this).data('item-id');
+            removeItem(itemId);
+        });
+    });
+</script>
+{% endblock %}

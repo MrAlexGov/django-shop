@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Бонусная программа{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'accounts:dashboard' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-tachometer-alt me-2"></i>Дашборд
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i>Профиль
+                    </a>
+                    <a href="{% url 'accounts:order_history' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказы
+                    </a>
+                    <a href="{% url 'accounts:addresses_list' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-map-marker-alt me-2"></i>Адреса
+                    </a>
+                    <a href="{% url 'accounts:wishlist' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i>Избранное
+                    </a>
+                    <a href="{% url 'accounts:bonuses' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-coins me-2"></i>Бонусы
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-coins text-warning me-2"></i>Бонусная программа</h2>
+            </div>
+
+            <!-- Текущий баланс -->
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h1 class="text-warning mb-2">{{ user.bonus_points }}</h1>
+                            <h5 class="text-muted">Баллов на счету</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-success mb-2">{{ stats.bonus_points_earned }}</h3>
+                            <h6 class="text-muted">Заработано всего</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-info mb-2">{{ stats.total_spent|floatformat:0 }}</h3>
+                            <h6 class="text-muted">Потрачено (₽)</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Как заработать бонусы -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-plus-circle text-success me-2"></i>Как заработать бонусы</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-shopping-cart text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Покупки в магазине</h6>
+                                    <p class="mb-0 text-muted small">Получайте 1 балл за каждые 100 ₽ потраченных на покупки</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Отзывы о товарах</h6>
+                                    <p class="mb-0 text-muted small">Пишите отзывы о купленных товарах и получайте дополнительные баллы</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-birthday-cake text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">День рождения</h6>
+                                    <p class="mb-0 text-muted small">Получайте бонусные баллы в день рождения</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Реферальная программа</h6>
+                                    <p class="mb-0 text-muted small">Приглашайте друзей и получайте бонусы за их покупки</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Как потратить бонусы -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-minus-circle text-danger me-2"></i>Как потратить бонусы</h5>
+                </div>
+                <div class="card-body">
+                    {% for action in actions %}
+                    <div class="border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ action.title }}</h6>
+                                <p class="mb-0 text-muted small">{{ action.description }}</p>
+                            </div>
+                            <button class="btn btn-outline-primary" onclick="useBonusAction('{{ action.action }}')">
+                                Использовать
+                            </button>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-3">
+                        <p class="text-muted mb-0">Список доступных действий с бонусами появится позже</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Рекомендации -->
+            {% if recommendations %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-lightbulb text-warning me-2"></i>Рекомендации по использованию бонусов</h5>
+                </div>
+                <div class="card-body">
+                    {% for recommendation in recommendations %}
+                    <div class="alert alert-info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="alert-heading mb-1">{{ recommendation.title }}</h6>
+                                <p class="mb-0">{{ recommendation.description }}</p>
+                            </div>
+                            <div class="text-end">
+                                <div class="text-primary fw-bold">{{ recommendation.cost }} баллов</div>
+                                <small class="text-muted">{{ recommendation.benefit }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- История операций -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-history me-2"></i>История операций с бонусами</h5>
+                </div>
+                <div class="card-body">
+                    {% if bonus_transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Операция</th>
+                                    <th>Баллы</th>
+                                    <th>Описание</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in bonus_transactions %}
+                                <tr>
+                                    <td>{{ transaction.date|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        {% if transaction.type == 'earned' %}
+                                        <span class="badge bg-success">Начислено</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Списано</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="{% if transaction.type == 'earned' %}text-success{% else %}text-danger{% endif %}">
+                                        {% if transaction.type == 'earned' %}+{% else %}-{% endif %}{{ transaction.points }}
+                                    </td>
+                                    <td>{{ transaction.description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-muted mb-0">История операций с бонусами пуста</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Правила программы -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle me-2"></i>Правила бонусной программы</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Бонусы начисляются автоматически после оплаты заказа</li>
+                        <li>1 балл = 1 рубль при оплате</li>
+                        <li>Бонусы не суммируются с другими скидками и акциями</li>
+                        <li>Минимальная сумма для списания бонусов - 100 баллов</li>
+                        <li>Бонусы действительны в течение 1 года с момента начисления</li>
+                        <li>При возврате товара бонусы возвращаются на счет</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function useBonusAction(actionType) {
+    // Здесь можно добавить AJAX запросы для различных действий с бонусами
+    switch(actionType) {
+        case 'discount':
+            alert('Функция получения скидки будет доступна скоро');
+            break;
+        case 'free_delivery':
+            alert('Функция бесплатной доставки будет доступна скоро');
+            break;
+        default:
+            alert('Неизвестное действие');
+    }
+}
+</script>
+
+<style>
+.card .bg-success, .card .bg-info, .card .bg-primary, .card .bg-warning {
+    color: white !important;
+}
+.alert-info {
+    border-left: 4px solid #0dcaf0;
+}
+.badge {
+    font-size: 0.75rem;
+}
+@media (max-width: 768px) {
+    .d-flex.align-items-start {
+        flex-direction: column;
+        text-align: center;
+    }
+    .d-flex.align-items-start .rounded-circle {
+        margin-bottom: 10px;
+        margin-right: 0 !important;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+
+{% block title %}Политика конфиденциальности - PhoneShop{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="fw-bold mb-3">Политика конфиденциальности</h1>
+                <p class="lead text-muted">Как мы обрабатываем и защищаем ваши персональные данные</p>
+                <small class="text-muted">Последнее обновление: 27 октября 2025 г.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Общие положения -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">1. Общие положения</h2>
+            <p>
+                Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о пользователях 
+                интернет-магазина PhoneShop (далее - "Сайт", "Магазин").
+            </p>
+            <p>
+                Настоящая политика разработана в соответствии с требованиями Федерального закона "О персональных данных" 
+                № 152-ФЗ и иными нормативными актами РФ, регулирующими обработку персональных данных.
+            </p>
+            <div class="alert alert-info">
+                <strong>Важно:</strong> Используя Сайт, вы даете согласие на обработку ваших персональных данных 
+                в соответствии с условиями настоящей Политики конфиденциальности.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Собираемая информация -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">2. Какую информацию мы собираем</h2>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <h4>Персональные данные</h4>
+            <ul>
+                <li><strong>Имя и фамилия</strong> - для оформления заказов и доставки</li>
+                <li><strong>Email адрес</strong> - для отправки подтверждений и уведомлений</li>
+                <li><strong>Номер телефона</strong> - для связи по вопросам заказа и доставки</li>
+                <li><strong>Адрес доставки</strong> - для отправки товаров</li>
+                <li><strong>Дата рождения</strong> - для предоставления персонализированных предложений</li>
+            </ul>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <h4>Автоматически собираемая информация</h4>
+            <ul>
+                <li><strong>IP-адрес</strong> - для обеспечения безопасности</li>
+                <li><strong>Тип браузера</strong> - для улучшения совместимости</li>
+                <li><strong>Cookies</strong> - для работы корзины и персонализации</li>
+                <li><strong>История просмотров</strong> - для рекомендаций товаров</li>
+                <li><strong>Время посещения</strong> - для аналитики сайта</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Цели обработки -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">3. Цели обработки персональных данных</h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-shopping-cart text-primary me-2"></i>
+                                Обработка заказов
+                            </h5>
+                            <p class="card-text">
+                                Обработка и исполнение заказов, включая доставку, оплату 
+                                и предоставление сервисного обслуживания.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-envelope text-primary me-2"></i>
+                                Коммуникация
+                            </h5>
+                            <p class="card-text">
+                                Отправка уведомлений о статусе заказа, ответы на вопросы, 
+                                техническая поддержка клиентов.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-chart-line text-primary me-2"></i>
+                                Улучшение сервиса
+                            </h5>
+                            <p class="card-text">
+                                Анализ поведения пользователей для улучшения качества 
+                                обслуживания и функциональности сайта.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-bullhorn text-primary me-2"></i>
+                                Маркетинг
+                            </h5>
+                            <p class="card-text">
+                                Отправка информации о новинках, акциях и специальных 
+                                предложениях (только с вашего согласия).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Защита данных -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">4. Защита персональных данных</h2>
+            
+            <div class="alert alert-success">
+                <h5><i class="fas fa-shield-alt me-2"></i>Меры безопасности</h5>
+                <p class="mb-0">
+                    Мы применяем современные технические и организационные меры защиты 
+                    ваших персональных данных от несанкционированного доступа, изменения, 
+                    раскрытия или уничтожения.
+                </p>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-lock fa-2x text-success mb-2"></i>
+                        <h6>Шифрование</h6>
+                        <small class="text-muted">SSL 3.0 для защиты передачи данных</small>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-server fa-2x text-success mb-2"></i>
+                        <h6>Безопасные серверы</h6>
+                        <small class="text-muted">Защищенные сервера с контролем доступа</small>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-user-shield fa-2x text-success mb-2"></i>
+                        <h6>Ограниченный доступ</h6>
+                        <small class="text-muted">Доступ только уполномоченных сотрудников</small>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="text-center">
+                        <i class="fas fa-sync fa-2x text-success mb-2"></i>
+                        <h6>Регулярное обновление</h6>
+                        <small class="text-muted">Постоянное обновление систем безопасности</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Передача третьим лицам -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">5. Передача данных третьим лицам</h2>
+            
+            <div class="alert alert-warning">
+                <strong>Мы не продаем и не передаем ваши персональные данные третьим лицам 
+                для их коммерческого использования!</strong>
+            </div>
+            
+            <p>Передача персональных данных может осуществляться только в следующих случаях:</p>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-truck text-primary me-2"></i>
+                                Службы доставки
+                            </h5>
+                            <p class="card-text">
+                                Для доставки заказов мы передаем курьерским службам только 
+                                необходимую информацию: имя, адрес, телефон.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-credit-card text-primary me-2"></i>
+                                Платежные системы
+                            </h5>
+                            <p class="card-text">
+                                Для обработки платежей данные передаются в зашифрованном 
+                                виде платежным системам без хранения на наших серверах.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-gavel text-primary me-2"></i>
+                                Государственные органы
+                            </h5>
+                            <p class="card-text">
+                                В случаях, предусмотренных законодательством РФ, 
+                                по официальным запросам правоохранительных органов.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-handshake text-primary me-2"></i>
+                                Партнеры
+                            </h5>
+                            <p class="card-text">
+                                Только с вашего согласия и в случаях, необходимых 
+                                для исполнения услуг (например, гарантийное обслуживание).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Права пользователей -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">6. Ваши права</h2>
+            
+            <p>Согласно действующему законодательству РФ, вы имеете следующие права:</p>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-eye text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на доступ</h6>
+                            <p class="text-muted small">Получать информацию о том, какие данные о вас обрабатываются</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-edit text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на исправление</h6>
+                            <p class="text-muted small">Требовать исправления неточных персональных данных</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-trash text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на удаление</h6>
+                            <p class="text-muted small">Требовать удаления персональных данных при определенных условиях</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-ban text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на ограничение</h6>
+                            <p class="text-muted small">Ограничить обработку персональных данных</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-download text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на портативность</h6>
+                            <p class="text-muted small">Получить копию ваших данных в структурированном формате</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-user-times text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6>Право на отзыв согласия</h6>
+                            <p class="text-muted small">Отозвать согласие на обработку персональных данных</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cookies -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">7. Использование Cookies</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        Сайт использует файлы cookies для обеспечения корректной работы корзины покупок, 
+                        сохранения предпочтений пользователя и анализа использования сайта.
+                    </p>
+                    
+                    <h6>Типы используемых cookies:</h6>
+                    <ul>
+                        <li><strong>Технические cookies</strong> - необходимы для работы сайта</li>
+                        <li><strong>Функциональные cookies</strong> - запоминают ваши предпочтения</li>
+                        <li><strong>Аналитические cookies</strong> - помогают улучшать сайт</li>
+                        <li><strong>Маркетинговые cookies</strong> - для персонализации рекламы</li>
+                    </ul>
+                    
+                    <p>
+                        Вы можете управлять использованием cookies через настройки вашего браузера. 
+                        Однако отключение некоторых cookies может повлиять на функциональность сайта.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Контактная информация -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">8. Контактная информация</h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">По вопросам обработки персональных данных</h5>
+                            <p>
+                                <i class="fas fa-envelope me-2"></i>
+                                <strong>Email:</strong> privacy@phoneshop.ru
+                            </p>
+                            <p>
+                                <i class="fas fa-phone me-2"></i>
+                                <strong>Телефон:</strong> +7 (495) 123-45-67
+                            </p>
+                            <p>
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <strong>Адрес:</strong> г. Москва, ул. Тверская, д. 15
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Время работы</h5>
+                            <p><strong>Понедельник - Пятница:</strong> 9:00 - 18:00</p>
+                            <p><strong>Суббота:</strong> 10:00 - 16:00</p>
+                            <p><strong>Воскресенье:</strong> Выходной</p>
+                            
+                            <div class="alert alert-info mt-3 mb-0">
+                                <small>
+                                    <strong>Обратите внимание:</strong> Запросы по персональным данным 
+                                    рассматриваются в течение 30 дней с момента получения.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Изменения в политике -->
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-light">
+                <h6><i class="fas fa-info-circle me-2"></i>Изменения в Политике конфиденциальности</h6>
+                <p class="mb-0">
+                    Мы оставляем за собой право вносить изменения в настоящую Политику конфиденциальности. 
+                    О существенных изменениях пользователи будут уведомлены заранее путем размещения 
+                    уведомления на сайте или отправки email.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Повторная отправка подтверждения - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-redo me-2"></i>Повторная отправка подтверждения
+                    </h2>
+                </div>
+                
+                <div class="card-body p-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <p class="card-text mb-4">
+                        Введите ваш email адрес, и мы отправим письмо с инструкциями 
+                        по подтверждению регистрации.
+                    </p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="form-floating mb-4">
+                            <input type="email" 
+                                   name="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   placeholder="name@example.com"
+                                   value="{{ email|default:'' }}"
+                                   required>
+                            <label for="email">Email адрес</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Отправить письмо
+                            </button>
+                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Вернуться ко входу
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center py-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fas fa-envelope text-primary me-2"></i>
+                                <span>Проверьте почту</span>
+                            </div>
+                            <small class="text-muted">
+                                Письмо придет на указанный email
+                            </small>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="fas fa-clock text-warning me-2"></i>
+                                <span>До 5 минут</span>
+                            </div>
+                            <small class="text-muted">
+                                Возможна задержка до 5 минут
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}Доставка - PhoneShop{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="fw-bold mb-3">Доставка</h1>
+                <p class="lead text-muted">Условия и стоимость доставки по всей России</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Способы доставки -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Способы доставки</h2>
+        </div>
+        
+        <!-- Курьерская доставка -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-motorcycle fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Курьерская доставка</h5>
+                    <h6 class="text-muted">По Москве и области</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>В день заказа</li>
+                        <li><i class="fas fa-check text-success me-2"></i>В пределах МКАД - 300 ₽</li>
+                        <li><i class="fas fa-check text-success me-2"></i>За МКАД - 500 ₽</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Доставка до двери</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Почта России -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-mail-bulk fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Почта России</h5>
+                    <h6 class="text-muted">По всей России</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>5-10 рабочих дней</li>
+                        <li><i class="fas fa-check text-success me-2"></i>250-500 ₽</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Отслеживание посылки</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Страхование включено</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Транспортные компании -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-truck fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Транспортные компании</h5>
+                    <h6 class="text-muted">СДЭК, ПЭК, Деловые линии</h6>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>2-7 рабочих дней</li>
+                        <li><i class="fas fa-check text-success me-2"></i>400-800 ₽</li>
+                        <li><i class="fas fa-check text-success me-2"></i>ПВЗ или до двери</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Быстрая доставка</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Сроки доставки -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Сроки доставки</h2>
+            
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Регион</th>
+                            <th>Способ доставки</th>
+                            <th>Срок</th>
+                            <th>Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Москва</strong></td>
+                            <td>Курьер</td>
+                            <td>В день заказа</td>
+                            <td>300 ₽</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Московская область</strong></td>
+                            <td>Курьер</td>
+                            <td>1-2 дня</td>
+                            <td>500 ₽</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Санкт-Петербург</strong></td>
+                            <td>Транспортная компания</td>
+                            <td>2-3 дня</td>
+                            <td>450 ₽</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Екатеринбург, Казань, Нижний Новгород</strong></td>
+                            <td>Транспортная компания</td>
+                            <td>3-5 дней</td>
+                            <td>550 ₽</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Другие регионы</strong></td>
+                            <td>Почта России / Транспортная компания</td>
+                            <td>5-10 дней</td>
+                            <td>400-800 ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Условия доставки -->
+    <div class="row mb-5">
+        <div class="col-lg-6">
+            <h3 class="mb-3">Основные условия</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item border-0">
+                    <i class="fas fa-check text-success me-2"></i>
+                    <strong>Бесплатная доставка</strong><br>
+                    При заказе от 5000 ₽ по Москве
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-check text-success me-2"></i>
+                    <strong>Время доставки</strong><br>
+                    С 9:00 до 21:00 (пн-вс)
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-check text-success me-2"></i>
+                    <strong>Предварительный звонок</strong><br>
+                    Курьер свяжется за 30 минут
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-check text-success me-2"></i>
+                    <strong>Проверка товара</strong><br>
+                    Возможность проверить при получении
+                </li>
+            </ul>
+        </div>
+        
+        <div class="col-lg-6">
+            <h3 class="mb-3">Дополнительная информация</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item border-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    <strong>Отслеживание заказа</strong><br>
+                    SMS и email уведомления
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    <strong>Повторная доставка</strong><br>
+                    При неудачной попытке - 200 ₽
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    <strong>Срочная доставка</strong><br>
+                    В течение 2-3 часов - +500 ₽
+                </li>
+                <li class="list-group-item border-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    <strong>За пределы России</strong><br>
+                    Отправляем только почтой России
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Часто задаваемые вопросы -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Часто задаваемые вопросы</h2>
+            
+            <div class="accordion" id="faqDelivery">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            Можно ли изменить адрес доставки после оформления заказа?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            Да, можно изменить адрес доставки до отправки заказа. Обратитесь к нам по телефону +7 (495) 123-45-67 или через форму обратной связи.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Что делать, если заказ не пришел в указанные сроки?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            Если заказ не пришел в указанные сроки, свяжитесь с нами по телефону или email. Мы отследим посылку и решим проблему в кратчайшие сроки.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Можно ли заказать доставку в конкретное время?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            Да, мы можем согласовать конкретное время доставки. Для этого обратитесь к менеджеру при оформлении заказа или сразу после него.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Как упакован товар при доставке?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            Все товары упаковываются в защитную пленку и коробку. Хрупкие товары дополнительно оборачиваются в пузырчатую пленку и маркируются соответствующими знаками.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

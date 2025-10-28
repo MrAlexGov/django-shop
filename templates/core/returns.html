@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+
+{% block title %}Возврат и обмен - PhoneShop{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="fw-bold mb-3">Возврат и обмен товара</h1>
+                <p class="lead text-muted">Условия возврата и обмена товаров в PhoneShop</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Основная информация -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle me-2"></i>Важная информация</h5>
+                <p class="mb-0">
+                    Согласно Закону "О защите прав потребителей" вы можете вернуть или обменять товар в течение 14 дней 
+                    с момента покупки. Для товаров надлежащего качества действует гарантия производителя.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Условия возврата -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Условия возврата и обмена</h2>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Товары надлежащего качества</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Срок возврата:</strong> 14 дней с момента покупки</p>
+                    <p><strong>Условия:</strong></p>
+                    <ul>
+                        <li>Товар не был в употреблении</li>
+                        <li>Сохранены товарный вид и потребительские свойства</li>
+                        <li>Сохранены ярлыки, пломбы, упаковка</li>
+                        <li>Имеется чек или документ, подтверждающий покупку</li>
+                    </ul>
+                    <p><strong>Возврат средств:</strong> В течение 5-10 рабочих дней</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Товары ненадлежащего качества</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Гарантийный срок:</strong> От 1 года (зависит от производителя)</p>
+                    <p><strong>Причины возврата:</strong></p>
+                    <ul>
+                        <li>Производственный брак</li>
+                        <li>Несоответствие описанию</li>
+                        <li>Повреждения при транспортировке</li>
+                        <li>Неисправность в гарантийный период</li>
+                    </ul>
+                    <p><strong>Возврат средств:</strong> В течение 10 дней с момента подтверждения</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Не подлежат возврату -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Товары, не подлежащие возврату</h2>
+            
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Обратите внимание!</h5>
+                <p>Согласно постановлению Правительства РФ №55 от 19.01.1998, следующие товары не подлежат возврату:</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li>Технически сложные товары бытового назначения</li>
+                            <li>Товары с истекшим гарантийным сроком</li>
+                            <li>Товары с поврежденной упаковкой</li>
+                            <li>Товары, бывшие в употреблении</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li>Товары без упаковки и документации</li>
+                            <li>Программное обеспечение</li>
+                            <li>Товары индивидуального пользования</li>
+                            <li>Товары со следами эксплуатации</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Процедура возврата -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Процедура возврата</h2>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px;">
+                                1
+                            </div>
+                            <h5>Свяжитесь с нами</h5>
+                            <p class="text-muted">Обратитесь по телефону +7 (495) 123-45-67 или через форму обратной связи</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px;">
+                                2
+                            </div>
+                            <h5>Заполните заявление</h5>
+                            <p class="text-muted">Скачайте и заполните заявление на возврат или обмен товара</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px;">
+                                3
+                            </div>
+                            <h5>Отправьте товар</h5>
+                            <p class="text-muted">Упакуйте товар в оригинальную упаковку и отправьте удобным способом</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px;">
+                                4
+                            </div>
+                            <h5>Получите возврат</h5>
+                            <p class="text-muted">После проверки деньги будут возвращены удобным для вас способом</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Способы возврата -->
+    <div class="row mb-5">
+        <div class="col-lg-6">
+            <h3 class="mb-3">Как отправить товар на возврат</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item border-0">
+                    <strong>Курьерская доставка</strong><br>
+                    <small class="text-muted">Наш курьер заберет товар в удобное время (бесплатно)</small>
+                </li>
+                <li class="list-group-item border-0">
+                    <strong>Пункт выдачи СДЭК</strong><br>
+                    <small class="text-muted">Отправьте товар до ближайшего ПВЗ (вам нужно оплатить доставку)</small>
+                </li>
+                <li class="list-group-item border-0">
+                    <strong>Почта России</strong><br>
+                    <small class="text-muted">Отправьте посылку с уведомлением о вручении</small>
+                </li>
+                <li class="list-group-item border-0">
+                    <strong>Самостоятельная доставка</strong><br>
+                    <small class="text-muted">Привезите товар в наш офис по предварительной договоренности</small>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="col-lg-6">
+            <h3 class="mb-3">Адрес возврата</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p><strong>PhoneShop - Возвраты</strong></p>
+                    <p>г. Москва, ул. Тверская, д. 15<br>
+                    БЦ "Центральный", офис 301</p>
+                    
+                    <p><strong>Контакты:</strong></p>
+                    <p>
+                        <i class="fas fa-phone me-2"></i>+7 (495) 123-45-67<br>
+                        <i class="fas fa-envelope me-2"></i>returns@phoneshop.ru
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Скачиваемые документы -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Документы для скачивания</h2>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                Заявление на возврат
+                            </h5>
+                            <p class="card-text">Стандартная форма для возврата товара надлежащего качества</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-2"></i>Скачать PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                Заявление на обмен
+                            </h5>
+                            <p class="card-text">Форма для обмена товара на аналогичный или другую модель</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-2"></i>Скачать PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                Заявление о недостатках
+                            </h5>
+                            <p class="card-text">Форма для возврата товара ненадлежащего качества</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-2"></i>Скачать PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Часто задаваемые вопросы -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Часто задаваемые вопросы</h2>
+            
+            <div class="accordion" id="faqReturns">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#return1">
+                            Можно ли вернуть товар без чека?
+                        </button>
+                    </h2>
+                    <div id="return1" class="accordion-collapse collapse show" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            Да, можно. В этом случае мы проверим покупку по базе данных магазина. 
+                            Для подтверждения покупки могут потребоваться дополнительные данные: 
+                            дата покупки, способ оплаты, контактные данные.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#return2">
+                            Сколько дней рассматривается заявление на возврат?
+                        </button>
+                    </h2>
+                    <div id="return2" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            Рассмотрение заявления на возврат занимает от 1 до 3 рабочих дней. 
+                            После подтверждения возврат средств осуществляется в течение 5-10 рабочих дней 
+                            в зависимости от банка и способа оплаты.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#return3">
+                            Можно ли обменять товар без возврата денег?
+                        </button>
+                    </h2>
+                    <div id="return3" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            Да, вы можете обменять товар на аналогичный или другой товар. 
+                            Если новый товар дороже, доплата осуществляется по согласованию. 
+                            Если дешевле - разница возвращается на ваш счет.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#return4">
+                            Кто оплачивает доставку при возврате?
+                        </button>
+                    </h2>
+                    <div id="return4" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            При возврате товара надлежащего качества стоимость доставки оплачивает покупатель. 
+                            При возврате бракованного товара мы полностью возместим расходы на доставку, 
+                            включая стоимость обратной пересылки.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#return5">
+                            Что делать, если товар был поврежден при доставке?
+                        </button>
+                    </h2>
+                    <div id="return5" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            При получении товара проверьте его упаковку. Если обнаружены повреждения, 
+                            составьте акт повреждения вместе с курьером. Мы полностью возместим стоимость 
+                            поврежденного товара или заменим его на аналогичный.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

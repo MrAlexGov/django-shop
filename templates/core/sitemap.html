@@ -1,0 +1,433 @@
+{% extends 'base.html' %}
+
+{% block title %}Карта сайта - PhoneShop{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="fw-bold mb-3">Карта сайта</h1>
+                <p class="lead text-muted">Полная структура сайта PhoneShop</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Основные разделы -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Основные разделы</h2>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-home me-2"></i>
+                        Главная страница
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Основная информация о магазине, рекомендуемые товары и новости</p>
+                    <a href="{% url 'core:home' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Перейти на главную
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-envelope me-2"></i>
+                        Контакты
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Контактная информация, форма обратной связи и схема проезда</p>
+                    <a href="{% url 'core:contact' %}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Связаться с нами
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Каталог товаров -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-boxes text-primary me-2"></i>
+                Каталог товаров
+            </h2>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-list me-2"></i>
+                        Все товары
+                    </h5>
+                    <p class="card-text">Полный каталог всех товаров интернет-магазина</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Поиск и фильтрация</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Сортировка по цене</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Пагинация</li>
+                    </ul>
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Открыть каталог
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-tags me-2"></i>
+                        Категории
+                    </h5>
+                    <p class="card-text">Товары, сгруппированные по категориям</p>
+                    {% for category in categories %}
+                        {% if category.is_active %}
+                            <div class="mb-1">
+                                <a href="{% url 'catalog:category_detail' category.slug %}" class="text-decoration-none small">
+                                    <i class="fas fa-angle-right text-muted me-1"></i>
+                                    {{ category.name }}
+                                    {% if category.products_count %}
+                                        <span class="text-muted">({{ category.products_count }})</span>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <small class="text-muted">Категории скоро появятся</small>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-star me-2"></i>
+                        Бренды
+                    </h5>
+                    <p class="card-text">Товары по производителям и брендам</p>
+                    {% for brand in brands %}
+                        {% if brand.is_active %}
+                            <div class="mb-1">
+                                <a href="{% url 'catalog:brand_detail' brand.slug %}" class="text-decoration-none small">
+                                    <i class="fas fa-angle-right text-muted me-1"></i>
+                                    {{ brand.name }}
+                                    {% if brand.products_count %}
+                                        <span class="text-muted">({{ brand.products_count }})</span>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <small class="text-muted">Бренды скоро появятся</small>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Информационные страницы -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-info-circle text-info me-2"></i>
+                Информационные страницы
+            </h2>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">О нас</h5>
+                    <p class="card-text">История компании, команда, преимущества</p>
+                    <a href="{% url 'core:about' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Подробнее
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-truck fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Доставка</h5>
+                    <p class="card-text">Способы доставки, сроки и стоимость</p>
+                    <a href="{% url 'core:delivery' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Узнать больше
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Оплата</h5>
+                    <p class="card-text">Способы оплаты и безопасность платежей</p>
+                    <a href="{% url 'core:payment' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Способы оплаты
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-undo fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Возврат</h5>
+                    <p class="card-text">Условия возврата и обмена товаров</p>
+                    <a href="{% url 'core:returns' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Условия возврата
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Блог и новости -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-newspaper text-success me-2"></i>
+                Блог и новости
+            </h2>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Все статьи
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Последние новости и полезные статьи о мобильных технологиях</p>
+                    {% for article in articles %}
+                        {% if article.is_published %}
+                            <div class="mb-2">
+                                <a href="{% url 'blog:post_detail' article.slug %}" class="text-decoration-none">
+                                    <h6 class="mb-1">{{ article.title }}</h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ article.published_at|date:"d.m.Y" }}
+                                    </small>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <p class="text-muted">Статьи скоро появятся</p>
+                    {% endfor %}
+                    <a href="{% url 'blog:post_list' %}" class="btn btn-success btn-sm mt-3">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Все статьи
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-thumbs-up me-2"></i>
+                        Популярные темы
+                    </h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-decoration-none">Обзоры смартфонов</a></li>
+                                <li><a href="#" class="text-decoration-none">Сравнения моделей</a></li>
+                                <li><a href="#" class="text-decoration-none">Советы по выбору</a></li>
+                                <li><a href="#" class="text-decoration-none">Ремонт и обслуживание</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-decoration-none">Новинки рынка</a></li>
+                                <li><a href="#" class="text-decoration-none">Аксессуары</a></li>
+                                <li><a href="#" class="text-decoration-none">Игры и приложения</a></li>
+                                <li><a href="#" class="text-decoration-none">Технологии</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Пользовательский раздел -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-user text-warning me-2"></i>
+                Пользовательский раздел
+            </h2>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-cart fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Корзина</h5>
+                    <p class="card-text">Просмотр и управление выбранными товарами</p>
+                    <a href="{% url 'cart:cart_detail' %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Открыть корзину
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-heart fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Избранное</h5>
+                    <p class="card-text">Сохраненные товары для дальнейшего просмотра</p>
+                    <a href="{% url 'accounts:wishlist' %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Мои избранные
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-cog fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Личный кабинет</h5>
+                    <p class="card-text">Настройки профиля и история заказов</p>
+                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Войти в кабинет
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Юридические документы -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-balance-scale text-secondary me-2"></i>
+                Юридические документы
+            </h2>
+        </div>
+        
+        <div class="col-lg-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Политика конфиденциальности
+                    </h5>
+                    <p class="card-text">Информация о сборе, использовании и защите персональных данных</p>
+                    <a href="{% url 'core:privacy' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Прочитать
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-file-contract me-2"></i>
+                        Условия использования
+                    </h5>
+                    <p class="card-text">Правила пользования сайтом и интернет-магазином</p>
+                    <a href="{% url 'core:terms' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Изучить
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Поиск -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-search text-info me-2"></i>
+                Поиск по сайту
+            </h2>
+            
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Не нашли нужную информацию?</h5>
+                    <p class="card-text">Воспользуйтесь поиском по всему сайту</p>
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <form class="d-flex" method="GET" action="{% url 'catalog:product_list' %}">
+                                <input type="search" class="form-control me-2" placeholder="Поиск товаров, статей..." name="q">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Или свяжитесь с нами напрямую через 
+                            <a href="{% url 'core:contact' %}" class="text-decoration-none">страницу контактов</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Быстрые ссылки -->
+<div class="bg-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h4>Быстрые ссылки</h4>
+                <div class="d-flex justify-content-center flex-wrap gap-3 mt-3">
+                    <a href="{% url 'core:home' %}" class="btn btn-outline-primary btn-sm">Главная</a>
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-primary btn-sm">Каталог</a>
+                    <a href="{% url 'blog:post_list' %}" class="btn btn-outline-primary btn-sm">Блог</a>
+                    <a href="{% url 'core:contact' %}" class="btn btn-outline-primary btn-sm">Контакты</a>
+                    <a href="{% url 'core:about' %}" class="btn btn-outline-primary btn-sm">О нас</a>
+                    <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-primary btn-sm">Корзина</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

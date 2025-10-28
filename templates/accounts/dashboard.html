@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Дашборд{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Личный кабинет</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'accounts:dashboard' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-tachometer-alt me-2"></i>Дашборд
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i>Профиль
+                    </a>
+                    <a href="{% url 'accounts:order_history' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказы
+                    </a>
+                    <a href="{% url 'accounts:addresses_list' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-map-marker-alt me-2"></i>Адреса
+                    </a>
+                    <a href="{% url 'accounts:wishlist' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-heart me-2"></i>Избранное
+                    </a>
+                    <a href="{% url 'accounts:bonuses' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-coins me-2"></i>Бонусы
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <!-- Приветствие -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Добро пожаловать, {{ user.get_full_name|default:user.username }}!</h3>
+                    <p class="card-text">Здесь вы можете управлять вашими заказами, настройками профиля и многим другим.</p>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title text-primary">{{ stats.total_orders }}</h4>
+                            <p class="card-text">Всего заказов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title text-success">{{ stats.pending_orders }}</h4>
+                            <p class="card-text">Активных заказов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title text-info">{{ stats.bonus_points }}</h4>
+                            <p class="card-text">Бонусных баллов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title text-warning">{{ stats.wishlist_count }}</h4>
+                            <p class="card-text">В избранном</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Последние заказы -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Последние заказы</h5>
+                    <a href="{% url 'accounts:order_history' %}" class="btn btn-sm btn-outline-primary">Все заказы</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_orders %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Номер заказа</th>
+                                        <th>Дата</th>
+                                        <th>Статус</th>
+                                        <th>Сумма</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in recent_orders %}
+                                    <tr>
+                                        <td><strong>{{ order.order_number }}</strong></td>
+                                        <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                                        <td>
+                                            <span class="badge
+                                                {% if order.status == 'completed' %}bg-success
+                                                {% elif order.status == 'pending' %}bg-warning
+                                                {% elif order.status == 'processing' %}bg-info
+                                                {% elif order.status == 'shipped' %}bg-primary
+                                                {% elif order.status == 'cancelled' %}bg-danger
+                                                {% else %}bg-secondary{% endif %}">
+                                                {{ order.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td><strong>{{ order.total_amount }} ₽</strong></td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-3">У вас пока нет заказов</p>
+                            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Начать покупки</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Избранные товары -->
+            {% if wishlist_items %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Избранные товары</h5>
+                    <a href="{% url 'accounts:wishlist' %}" class="btn btn-sm btn-outline-primary">Все товары</a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for item in wishlist_items %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">{{ item.product.name }}</h6>
+                                    <p class="text-primary font-weight-bold">{{ item.product.price }} ₽</p>
+                                    <a href="{% url 'catalog:product_detail' item.product.slug %}" class="btn btn-sm btn-outline-primary">Посмотреть</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Рекомендации -->
+            {% if recommendations %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Рекомендуемые товары</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for product in recommendations %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">{{ product.name }}</h6>
+                                    <p class="text-primary font-weight-bold">{{ product.price }} ₽</p>
+                                    <a href="{% url 'catalog:product_detail' product.slug %}" class="btn btn-sm btn-primary">Купить</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Быстрые действия -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Быстрые действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-user-edit me-2"></i>Редактировать профиль
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <a href="{% url 'accounts:addresses_list' %}" class="btn btn-outline-secondary btn-lg w-100">
+                                <i class="fas fa-map-marker-alt me-2"></i>Адреса доставки
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-warning btn-lg w-100">
+                                <i class="fas fa-key me-2"></i>Сменить пароль
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <a href="{% url 'accounts:notification_settings' %}" class="btn btn-outline-info btn-lg w-100">
+                                <i class="fas fa-bell me-2"></i>Уведомления
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card-title {
+    font-size: 1.1rem;
+}
+.btn-lg {
+    padding: 0.75rem 1rem;
+}
+</style>
+{% endblock %}
