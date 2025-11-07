@@ -16,6 +16,9 @@ urlpatterns = [
     path('success/<str:order_number>/', login_required(views.order_success), name='order_success'),
     path('detail/<str:order_number>/', login_required(views.order_detail), name='order_detail'),
     
+    # Оформление заказа
+    path('checkout/', login_required(views.checkout_step1), name='checkout'),
+
     # Оформление заказа в 3 шага
     path('checkout/step1/', login_required(views.checkout_step1), name='checkout_step1'),
     path('checkout/step2/', login_required(views.checkout_step2), name='checkout_step2'),

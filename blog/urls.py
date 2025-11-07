@@ -22,6 +22,9 @@ urlpatterns = [
     
     # Комментарии
     path('post/<slug:slug>/comment/', views.add_comment, name='add_comment'),
+    path('newsletter/', views.newsletter_signup, name='newsletter_signup'),
+    path('my-articles/', views.my_articles, name='my_articles'),
+    path('comments/', views.comments_list, name='comments_list'),
     
     # Категории и теги
     path('categories/', views.category_list, name='category_list'),

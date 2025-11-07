@@ -80,11 +80,12 @@
                 <h5 class="mb-3">Фильтры</h5>
                 
                 <form method="GET" id="filter-form">
+                    {% csrf_token %}
                     <!-- Поиск -->
                     <div class="mb-3">
                         <label for="search" class="form-label">Поиск</label>
-                        <input type="text" class="form-control" id="search" name="q" 
-                               value="{{ request.GET.q }}" placeholder="Название товара...">
+                        <input type="text" class="form-control" id="search" name="q"
+                                value="{{ request.GET.q }}" placeholder="Название товара...">
                     </div>
                     
                     <!-- Категории -->
@@ -322,53 +323,94 @@
     $(document).on('click', '.add-to-cart', function() {
         const productId = $(this).data('product-id');
         const button = $(this);
-        
+
         button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Добавляем...');
-        
-        $.ajax({
-            url: '{% url "cart:add_to_cart" %}',
+
+        // Получаем CSRF токен из формы или cookie
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                        document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
+                        getCookie('csrftoken');
+
+        fetch('/cart/add/', {
             method: 'POST',
-            data: {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
                 product_id: productId,
-                quantity: 1,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function(response) {
-                if (response.success) {
-                    button.removeClass('btn-primary').addClass('btn-success');
-                    button.html('<i class="fas fa-check me-1"></i>В корзине');
-                    
-                    // Обновляем счетчик корзины
-                    updateCartCount();
-                    
-                    setTimeout(function() {
-                        button.removeClass('btn-success').addClass('btn-primary');
-                        button.html('<i class="fas fa-shopping-cart me-1"></i>В корзину');
-                    }, 3000);
-                } else {
+                quantity: 1
+            })
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                button.removeClass('btn-primary').addClass('btn-success');
+                button.html('<i class="fas fa-check me-1"></i>В корзине');
+
+                setTimeout(function() {
+                    button.removeClass('btn-success').addClass('btn-primary');
+                    button.html('<i class="fas fa-shopping-cart me-1"></i>В корзину');
                     button.prop('disabled', false);
-                    alert('Ошибка: ' + response.message);
-                }
-            },
-            error: function() {
+                }, 3000);
+
+                // Обновляем счетчик корзины после небольшой задержки
+                setTimeout(updateCartCount, 500);
+            } else {
                 button.prop('disabled', false);
-                button.html('<i class="fas fa-shopping-cart me-1"></i>В корзину');
-                alert('Произошла ошибка при добавлении товара');
+                alert('Ошибка: ' + response.message);
             }
+        })
+        .catch(error => {
+            console.error('Error in add to cart:', error);
+            button.prop('disabled', false);
+            button.html('<i class="fas fa-shopping-cart me-1"></i>В корзину');
+            alert('Произошла ошибка при добавлении товара в корзину');
         });
     });
+
+    // Функция для получения cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
     
     // Обновление счетчика корзины
     function updateCartCount() {
-        $.get('{% url "cart:cart_indicator_ajax" %}')
-            .done(function(data) {
-                if (data.cart_count !== undefined) {
-                    $('#cart-count').text(data.cart_count);
-                }
-            })
-            .fail(function() {
-                console.log('Не удалось обновить счетчик корзины');
-            });
+        console.log('Updating cart count...');
+        fetch('{% url "cart:cart_indicator_ajax" %}', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            console.log('Cart count response:', response);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Cart count data:', data);
+            if (data.count !== undefined) {
+                $('#cart-count').text(data.count);
+            }
+        })
+        .catch(error => {
+            console.error('Failed to update cart count:', error);
+            // Не показываем alert при ошибке обновления счетчика
+        });
     }
     
     // Автоматическая отправка формы при изменении фильтров

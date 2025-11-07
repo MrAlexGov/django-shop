@@ -179,7 +179,7 @@ class Product(models.Model):
     is_featured = models.BooleanField('Рекомендуемый', default=False)
     is_bestseller = models.BooleanField('Хит продаж', default=False)
     is_new = models.BooleanField('Новинка', default=False)
-    is_discount = models.BooleanField('Со скидкой', default=False, null=False)
+    is_discount = models.BooleanField('Со скидкой', default=False)
     
     sort_order = models.PositiveIntegerField('Порядок сортировки', default=0)
     

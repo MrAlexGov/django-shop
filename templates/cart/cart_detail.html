@@ -88,7 +88,7 @@
                             <div class="cart-item" data-item-id="{{ item.id }}">
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
-                                        <img src="{{ item.product.main_image.url|default:'/static/images/no-image.png' }}" 
+                                        <img src="{{ item.product.get_main_image.url|default:'/static/images/no-image.png' }}" 
                                              class="product-image rounded" alt="{{ item.product.name }}">
                                     </div>
                                     <div class="col-md-4">

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Активация аккаунта - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Активация аккаунта</h4>
+                </div>
+                <div class="card-body">
+                    {% if validlink %}
+                        <div class="alert alert-success">
+                            <h5><i class="fas fa-check-circle"></i> Аккаунт успешно активирован!</h5>
+                            <p>Ваш аккаунт был успешно активирован. Теперь вы можете войти в систему.</p>
+                            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Войти</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-circle"></i> Ошибка активации</h5>
+                            <p>Ссылка активации недействительна или истекла.</p>
+                            <p>Если проблема повторяется, пожалуйста, свяжитесь с поддержкой.</p>
+                            <a href="{% url 'accounts:activation_sent' %}" class="btn btn-outline-primary">Запросить новую ссылку</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
